@@ -6,12 +6,20 @@ import {
   extractXcsTokens,
   renderXcsFile,
 } from 'laser-template-builder';
-import type { TemplateVariable, SourceFormat, ExportRequest, Template } from 'laser-template-builder';
+import type { TemplateVariable, TextTemplateVariable, SourceFormat, ExportRequest, Template } from 'laser-template-builder';
 
 export interface UploadOutput {
   template: Template;
   fileContent: string | ArrayBuffer;
   imageBlobUrl?: string;
+}
+
+function tokensToVariables(tokens: string[]): TextTemplateVariable[] {
+  return tokens.map((token) => ({
+    token,
+    label: token.replace(/^\{\{|\}\}$/g, ''),
+    defaultValue: '',
+  }));
 }
 
 export async function upload(file: File): Promise<UploadOutput> {
@@ -27,26 +35,29 @@ export async function upload(file: File): Promise<UploadOutput> {
     sourceFormat,
     variables,
     filePath: file.name,
+    description: null,
+    categoryId: null,
+    thumbnailPath: null,
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   });
 
   if (ext === 'svg') {
     const text = await file.text();
-    const tokens = extractSvgTokens(text);
-    return { template: makeTemplate('SVG', tokens), fileContent: text };
+    const variables = tokensToVariables(extractSvgTokens(text));
+    return { template: makeTemplate('SVG', variables), fileContent: text };
   }
 
   if (ext === 'lbrn2') {
     const text = await file.text();
-    const tokens = extractLightBurnTokens(text);
-    return { template: makeTemplate('LBRN2', tokens), fileContent: text };
+    const variables = tokensToVariables(extractLightBurnTokens(text));
+    return { template: makeTemplate('LBRN2', variables), fileContent: text };
   }
 
   if (ext === 'xcs') {
     const buf = await file.arrayBuffer();
-    const tokens = await extractXcsTokens(buf);
-    return { template: makeTemplate('XCS', tokens), fileContent: buf };
+    const variables = tokensToVariables(await extractXcsTokens(buf));
+    return { template: makeTemplate('XCS', variables), fileContent: buf };
   }
 
   // image formats
