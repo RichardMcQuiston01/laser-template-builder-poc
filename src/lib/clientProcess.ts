@@ -90,7 +90,7 @@ export async function exportFile(
 
   if (outputFormat === 'XCS') {
     const out = await renderXcsFile(fileContent as ArrayBuffer, variables, variableValues);
-    return { blob: new Blob([out], { type: 'application/zip' }), filename: `${baseName}.xcs` };
+    return { blob: new Blob([out.buffer as ArrayBuffer], { type: 'application/zip' }), filename: `${baseName}.xcs` };
   }
 
   throw new Error(`Unsupported output format: ${outputFormat}`);
