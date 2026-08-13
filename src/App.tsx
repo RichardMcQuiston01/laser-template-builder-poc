@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Analytics } from '@vercel/analytics/react';
 import { UploadView } from './views/UploadView';
 import { EditView } from './views/EditView';
 import { DonateWidget } from './components/DonateWidget';
@@ -35,6 +36,7 @@ export default function App() {
       <>
         <UploadView onReady={handleReady} />
         <DonateWidget />
+        <Analytics />
       </>
     );
   }
@@ -49,6 +51,7 @@ export default function App() {
         onUpdateTemplate={handleUpdateTemplate}
       />
       <DonateWidget />
+      <Analytics />
     </>
   );
 }
