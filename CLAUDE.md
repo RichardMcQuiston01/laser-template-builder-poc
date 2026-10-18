@@ -52,7 +52,7 @@ The Tailwind config includes the library's `dist/` JS files in the `content` arr
 |---|---|---|---|
 | `.svg` | `SVG` | `extractSvgTokens` | `renderSvgFile` |
 | `.lbrn2` | `LBRN2` | `extractLightBurnTokens` | `renderLightBurnFile` |
-| `.xcs` | `XCS` | `extractXcsTokens` (async, ZIP-based) | `renderXcsFile` |
+| `.xcs` | `XCS` | `extractXcsTokens` | `renderXcsFile` |
 | `.png/.jpg/.webp` | `IMAGE` | none (textbox overlays only) | image SVG/PNG export |
 
 ### Tailwind brand palette
